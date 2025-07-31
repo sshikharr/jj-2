@@ -36,6 +36,7 @@ export const login = async (req, res) => {
         country: user.country,
         language: user.language,
         createdAt: user.createdAt,
+        newsLetterSubscribed: user.newsLetterSubscribed,
         token,
       });
 

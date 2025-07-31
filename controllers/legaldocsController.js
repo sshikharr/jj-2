@@ -15,11 +15,13 @@ export const generateQuestions = async (req, res) => {
         .status(400)
         .json({ error: "User input and country are required." });
     }
-
+    console.log('1');
     // Call Gemini API for question generation
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-pro-exp-02-05",
+      // model: "gemini-2.0-pro-exp-02-05",
+      model: "gemini-2.0-flash",
     });
+    console.log('2');
     const result = await model.generateContent({
       contents: [
         {
@@ -40,7 +42,7 @@ export const generateQuestions = async (req, res) => {
         },
       ],
     });
-
+    console.log('3');
     const response = await result.response;
     const questions = response.text().trim().split("\n").filter(Boolean);
     console.log(questions);
@@ -52,16 +54,24 @@ export const generateQuestions = async (req, res) => {
 };
 
 export const createDocument = async (req, res) => {
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    "https://juristo-sigma.vercel.app"
-  );
+  // Updated CORS configuration to allow multiple origins
+  const allowedOrigins = [
+    "https://juristo-sigma.vercel.app",
+    "https://www.chat.juristo.in"
+  ];
+  
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+  
   res.setHeader(
     "Access-Control-Allow-Methods",
     "GET, POST, PUT, DELETE, OPTIONS"
   );
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   res.setHeader("Access-Control-Allow-Credentials", "true");
+  
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
   try {
     // Extract required fields from the request body
@@ -81,7 +91,8 @@ export const createDocument = async (req, res) => {
     }
     // Call Gemini API to generate the legal document
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-pro-exp-02-05",
+      // model: "gemini-2.0-pro-exp-02-05",
+      model: "gemini-2.0-flash",
     });
     const result = await model.generateContent({
       contents: [

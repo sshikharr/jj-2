@@ -64,6 +64,7 @@ export const findUserByEmail = async (req, res) => {
 
   try {
     const user = await User.findOne({ email });
+    console.log("User found:", user);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -222,3 +223,24 @@ export const validateApiKey = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+export const subscribeNewsletter = async (req, res) => {
+  const { email } = req.body;
+  if(!email){
+    return res.status(400).json({ error: "Email is required." });
+  }
+  try{
+    const user = await User.findOneAndUpdate(
+      { email },
+      { newsLetterSubscribed: true },
+      { new: true }
+    );
+    if (!user) {
+      return res.status(404).json({ error: "User not found." });
+    }
+    res.status(200).json({ message: "Subscribed to newsletter successfully." });
+  }catch (error) {
+    console.error("Error subscribing to newsletter:", error);
+    return res.status(500).json({ error: "Failed to subscribe to newsletter." });
+  }
+}

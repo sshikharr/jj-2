@@ -23,7 +23,9 @@ app.use((req, res, next) => {
     "http://localhost:8541",
     "https://juristo-prod.vercel.app",
     "https://juristo.onrender.com",
-    "https://juristobot.vercel.app"
+    "https://juristobot.vercel.app",
+    "https://www.chat.juristo.in",
+    "https://chat.juristo.in",
   ];
   const origin = req.headers.origin;
 

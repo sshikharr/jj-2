@@ -53,6 +53,7 @@ const userSchema = new mongoose.Schema(
       count: { type: Number, default: 0 },
       lastReset: { type: Date, default: Date.now }
     },
+    newsLetterSubscribed: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
